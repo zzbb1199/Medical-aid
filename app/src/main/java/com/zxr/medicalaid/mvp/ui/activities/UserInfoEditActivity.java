@@ -119,7 +119,6 @@ public class UserInfoEditActivity extends BaseActivity implements ChangUserNameV
                 ToActivityUtil.toNextActivity(this, LoginActivity.class);
                 ActivityStack.getScreenManager().clearAllActivity();
                 SharedPreferences preferences =getSharedPreferences("isConnect",MODE_PRIVATE);
-
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.commit();

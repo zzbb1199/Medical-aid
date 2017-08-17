@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.github.lazylibrary.util.DensityUtil;
@@ -71,7 +72,11 @@ public class InquiryActivity extends BaseActivity implements SwipeRefreshLayout.
 //            linkIdList.add(linkIdArray[i]);
         //        }
         idType = getIntent().getStringExtra("type");
-        mToolbar.setTitle(R.string.inquiryRecord);
+        if(idType.equals("doctor")){
+            mToolbar.setTitle(R.string.inquiryRecord);
+        }else {
+            mToolbar.setTitle("就诊记录");
+        }
         mToolbar.setTitleTextColor(Color.WHITE);
         //初始化adaper
         adapter = new InquiryContentAdapter(this);
@@ -126,12 +131,19 @@ public class InquiryActivity extends BaseActivity implements SwipeRefreshLayout.
     public void onRefresh() {
         
         //进行加载
+        Log.e("TAG","onRefresh");
         daoSession = DbUtil.getDaosession();
         MedicalListDao medicalListDao = daoSession.getMedicalListDao();
+        datas.clear();
+        patientName.clear();
+        adapter.clear();
         if(idType.equals("doctor")){
+            Log.e("TAG","doctor");
             List<MedicalList> lists = medicalListDao.queryBuilder().where(MedicalListDao.Properties.Patient.eq("patient")).list();
+            Log.e(TAG,lists.size()+"");
             for(int i=0;i<lists.size();i++){
                 datas.add(new Person(lists.get(i).getName(),lists.get(i).getDate(),""));
+                Log.e("TAG",datas.get(i).getName());
                 patientName.add(lists.get(i).getName());
             }
         }else if(idType.equals("patient")){
@@ -146,6 +158,7 @@ public class InquiryActivity extends BaseActivity implements SwipeRefreshLayout.
 //            datas.add(new Person(lists.get(i).getName(),lists.get(i).getDate(),""));
 //            patientName.add(lists.get(i).getName());
 //        }
+
         adapter.addAll(datas);
         adapter.notifyDataSetChanged();
 //        User user = daoSession.getUserDao().queryBuilder().where(UserDao.Properties.IsAlready.eq(1)).unique();
