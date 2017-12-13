@@ -166,8 +166,8 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
     DaoSession daoSession= DbUtil.getDaosession();
     MedicalListDao medicalListDao;
     private String patientId;
-    private SharedPreferences spf =this.getPreferences(MODE_PRIVATE);
-    private SharedPreferences.Editor editor = spf.edit();
+    private SharedPreferences spf ;
+    private SharedPreferences.Editor editor ;
     /**
      * 数据
      */
@@ -183,7 +183,8 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
 
     @Override
     public void initViews() {
-
+        spf = this.getPreferences(MODE_PRIVATE);
+        editor = spf.edit();
         //设置toolbar
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

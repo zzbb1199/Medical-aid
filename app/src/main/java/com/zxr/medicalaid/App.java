@@ -34,7 +34,7 @@ public class App extends Application {
         initApplicationComponent();
         initGallerFinal();
         Stetho.initializeWithDefaults(this);
-        this.context = this;
+        context = this;
     }
 
     private void initGallerFinal() {

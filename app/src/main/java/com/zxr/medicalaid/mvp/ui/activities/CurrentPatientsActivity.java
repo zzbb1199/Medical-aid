@@ -47,6 +47,7 @@ import javax.inject.Inject;
 
 import butterknife.InjectView;
 
+
 /**
  * 区分药师和病人
  */

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.zxr.medicalaid"
-        minSdkVersion 15
+        minSdkVersion 18
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -43,7 +43,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //动画
-
     //工具类
     compile files('libs/MobCommons-2017.0321.1624.jar')
     compile files('libs/MobCommons-2017.0607.1736.jar')
@@ -77,7 +76,7 @@ dependencies {
     compile 'cn.finalteam:galleryfinal:1.4.3'
     //时间选择器
     compile 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
-
-    compile('com.github.hotchemi:permissionsdispatcher:2.4.0')
+    compile 'com.github.hotchemi:permissionsdispatcher:2.4.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
+    compile project(':car')
 }
