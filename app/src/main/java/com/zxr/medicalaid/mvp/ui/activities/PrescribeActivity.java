@@ -127,7 +127,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
 //                        Log.e(TAG,str1);
 //                    }
 //                    long linkId = Long.valueOf(str[str.length-1]);
-                    Log.e(TAG,linkId+"");
+                    Log.e(TAG,linkId+" ++"+builder.toString());
                     presenter.upLoadPrescription(linkId,builder.toString());
                     finish();
                     break;

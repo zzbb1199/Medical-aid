@@ -62,8 +62,8 @@ public class QRActivity extends PermissionActivity implements LinkView {
 
     @Override
     public void initInjector() {
-        //        mActivityComponent.inject(this);
-        //        presenter.injectView(this);
+                mActivityComponent.inject(this);
+                presenter.injectView(this);
     }
 
 

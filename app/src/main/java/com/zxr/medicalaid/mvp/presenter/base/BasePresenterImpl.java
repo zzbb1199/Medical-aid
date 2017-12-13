@@ -25,7 +25,4 @@ public class BasePresenterImpl<T extends BaseView> implements BasePresenter {
     public void injectView(@NonNull BaseView view) {
         mView = (T) view;
     }
-
-
-
 }

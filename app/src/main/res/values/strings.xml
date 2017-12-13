@@ -22,7 +22,7 @@
     <string name="inquiryRecord">问诊记录</string>
     <string name="prescription">药方:</string>
 
-    <string name="weight">重量</string>
+    <string name="weight">重量（克）</string>
     <string name="medince_name">药名</string>
     <string name="send">发送</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
