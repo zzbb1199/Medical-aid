@@ -77,11 +77,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="3:2"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/about_us_bt"
+            app:layout_constraintRight_toLeftOf="@+id/machine"
             app:layout_constraintTop_toBottomOf="@+id/presribe_bt" />
 
         <com.zxr.medicalaid.widget.MaskableImageView
-            android:id="@+id/about_us_bt"
+            android:id="@+id/machine"
             android:layout_width="150dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"

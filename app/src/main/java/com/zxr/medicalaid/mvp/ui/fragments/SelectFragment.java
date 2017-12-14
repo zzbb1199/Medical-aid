@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.g150s.blecarnmid.ui.activities.MainActivity;
 import com.youth.banner.Banner;
 import com.zxr.medicalaid.R;
 import com.zxr.medicalaid.dagger.scope.ContextLife;
@@ -66,7 +65,7 @@ public class SelectFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.prescribe_bt, R.id.treat_bt,R.id.test})
+    @OnClick({R.id.prescribe_bt, R.id.treat_bt})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.prescribe_bt:
@@ -76,9 +75,7 @@ public class SelectFragment extends BaseFragment {
             case R.id.treat_bt:
                 ToActivityUtil.toNextActivity(mContext, QRActivity.class);
                 break;
-            case R.id.test:
-                ToActivityUtil.toNextActivity(mContext, MainActivity.class);
-                break;
+        
         }
     }
 

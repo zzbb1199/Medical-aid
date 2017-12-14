@@ -14,6 +14,8 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.github.lazylibrary.util.ToastUtils;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zxr.medicalaid.DaoSession;
 import com.zxr.medicalaid.DateDao;
 import com.zxr.medicalaid.MedicalList;
@@ -27,7 +29,6 @@ import com.zxr.medicalaid.mvp.view.LinkView;
 import com.zxr.medicalaid.utils.db.DbUtil;
 import com.zxr.medicalaid.utils.db.IdUtil;
 import com.zxr.medicalaid.utils.encode.EncodeUtil;
-import com.zxr.medicalaid.zxing.CaptureActivity;
 
 import java.security.Key;
 import java.security.MessageDigest;
@@ -48,7 +49,6 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
 
 @RuntimePermissions
 public class QRActivity extends PermissionActivity implements LinkView {
@@ -62,8 +62,8 @@ public class QRActivity extends PermissionActivity implements LinkView {
 
     @Override
     public void initInjector() {
-                mActivityComponent.inject(this);
-                presenter.injectView(this);
+        mActivityComponent.inject(this);
+        presenter.injectView(this);
     }
 
 
@@ -109,6 +109,7 @@ public class QRActivity extends PermissionActivity implements LinkView {
             SharedPreferences preferences = getSharedPreferences("isConnect", MODE_PRIVATE);
             String doctorId = preferences.getString("uId", "");
             if (!doctorId.equals("")) {
+                //病人-已挂号
                 Intent intent = new Intent(QRActivity.this, CurrentPatientsActivity.class);
                 intent.putExtra("uId", doctorId);
                 intent.putExtra(CurrentPatientsActivity.GET_FROM, CurrentPatientsActivity.PATIENT);
@@ -116,16 +117,12 @@ public class QRActivity extends PermissionActivity implements LinkView {
                 startActivity(intent);
                 finish();
             } else {
-                Intent qrReaderIntent = new Intent(QRActivity.this, CaptureActivity.class);
-                qrReaderIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivityForResult(qrReaderIntent, SCANNING_REQUEST_CODE);
+                //病人-未挂号
+                Intent intent = new Intent(this, CaptureActivity.class);
+                startActivityForResult(intent, 1);
                 //          finish();
             }
         }
-    }
-
-    private void alreadyConnect() {
-
     }
 
 
@@ -134,34 +131,27 @@ public class QRActivity extends PermissionActivity implements LinkView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case SCANNING_REQUEST_CODE:
-                if (resultCode == RESULT_OK) {
-                    final Bundle bundle = data.getExtras();
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            String doctorId = bundle.getString("result");
-                            Log.e(TAG, doctorId);
-                            DaoSession daoSession = DbUtil.getDaosession();
-                            UserDao userDao = daoSession.getUserDao();
-                            List<User> list = userDao.queryBuilder().list();
-                            Log.e(TAG, list.size() + "");
-                            observable = Observable.create(new Observable.OnSubscribe<String>() {
-                                @Override
-                                public void call(Subscriber<? super String> subscriber) {
-                                    subscriber.onNext(doctorId);
-                                }
-                            });
-                            presenter.linkDP(doctorId, IdUtil.getIdString());
-                        }
-                    });
-                }
-                break;
-            default:
-                break;
+        if (null != data) {
+            Bundle bundle = data.getExtras();
+            if (bundle == null) {
+                return;
+            }
+            if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> {
+                    String doctorId = bundle.getString(CodeUtils.RESULT_STRING);
+                    Log.e(TAG, doctorId);
+                    DaoSession daoSession = DbUtil.getDaosession();
+                    UserDao userDao = daoSession.getUserDao();
+                    List<User> list = userDao.queryBuilder().list();
+                    Log.e(TAG, list.size() + "");
+                    observable = Observable.create(subscriber -> subscriber.onNext(doctorId));
+                    presenter.linkDP(doctorId, IdUtil.getIdString());
+                });
+            }
         }
+
+
     }
 
     MessageDigest md;
@@ -221,12 +211,12 @@ public class QRActivity extends PermissionActivity implements LinkView {
     public void linkSucceed(LinkInfo linkInfo) {
         observable.subscribe(observer);
         long linkId = linkInfo.getBody().getId();
-        SharedPreferences sp = getSharedPreferences("linkIdForPat",MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("linkIdForPat", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putLong(linkInfo.getBody().getDoctor().getNickName(),linkId);
-        Log.e(TAG,linkId+"");
+        editor.putLong(linkInfo.getBody().getDoctor().getNickName(), linkId);
+        Log.e(TAG, linkId + "");
         editor.apply();
-        MedicalList list =new MedicalList();
+        MedicalList list = new MedicalList();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         list.setDate((dateFormat.format(new Date())));
         list.setName(linkInfo.getBody().getDoctor().getNickName());
@@ -286,14 +276,14 @@ public class QRActivity extends PermissionActivity implements LinkView {
     void cameraDenied() {
         ToastUtils.showToast(this, "您未授予权限，正在退出");
     }
-    
+
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
     void cameraDeniedForever() {
         ToastUtils.showToast(this, "您未授予权限，请手动授予");
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS );
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + getPackageName()));
         startActivityForResult(intent, 1);
-        
+
     }
 }

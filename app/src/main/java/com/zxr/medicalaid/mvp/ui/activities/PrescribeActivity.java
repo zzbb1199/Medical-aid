@@ -48,7 +48,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptionView{
+public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptionView {
 
     /**
      * view
@@ -73,7 +73,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
     EditText mWeightInput;
     @Inject
     UpLoadPrescriptionPresenterImpl presenter;
-    long linkId ;
+    long linkId;
 
 
     private Handler handler = new Handler() {
@@ -84,29 +84,20 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
                 case CONNECT_FAILED:
                     ToastUtils.showToast(PrescribeActivity.this, "连接失败，请重试");
                     //此处弹窗
-                    EditText editText = (EditText) LayoutInflater.from(PrescribeActivity.this).inflate(R.layout.view_reset_ip,null);
+                    EditText editText = (EditText) LayoutInflater.from(PrescribeActivity.this).inflate(R.layout.view_reset_ip, null);
                     new AlertDialog.Builder(PrescribeActivity.this)
                             .setTitle("提示")
                             .setView(editText)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            String newIp = editText.getText().toString();
-                                            editor.putString("ip",newIp);
-                                            editor.commit();
-                                            IP_ADD = newIp;
-                                        }
+                            .setPositiveButton("确定", (dialog, which) -> {
+                                        dialog.dismiss();
+                                        String newIp = editText.getText().toString();
+                                        editor.putString("ip", newIp);
+                                        editor.commit();
+                                        IP_ADD = newIp;
                                     }
-                            ).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).show();
+                            ).setNegativeButton("取消", (dialog, which) -> dialog.dismiss()).show();
                     break;
                 case NO_THIS_MEDICINE:
-//                    ToastUtils.showToast(PrescribeActivity.this, "暂时不支持 " + msg.obj.toString() + " 发送");
                     Toast.makeText(PrescribeActivity.this, "暂时不支持 " + msg.obj.toString() + " 发送", Toast.LENGTH_SHORT);
                     break;
                 case CONNECT_SUCCESS:
@@ -115,20 +106,20 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
                 case SEND_SUCCESS:
                     ToastUtils.showToast(PrescribeActivity.this, "已成功发送");
                     StringBuilder builder = new StringBuilder();
-                    for(int i=0;i<listName.size();i++){
-                        builder.append(listName.get(i)+"_"+listWeight.get(i)+",");
+                    for (int i = 0; i < listName.size(); i++) {
+                        builder.append(listName.get(i) + "_" + listWeight.get(i) + ",");
                     }
-//                    long linkId= daoSession.getLinkDao().queryBuilder().where(LinkDao.Properties.Id.eq(
-//                            daoSession.getUserDao().queryBuilder().where(UserDao.Properties.IsAlready.eq(1)).unique().getLinkId()
-//                    )).unique().getUId();
-//                    SharedPreferences sp = getSharedPreferences("linkId",MODE_PRIVATE);
-//                    String[] str = sp.getString("linkId","").split(",");
-//                    for(String str1 :str){
-//                        Log.e(TAG,str1);
-//                    }
-//                    long linkId = Long.valueOf(str[str.length-1]);
-                    Log.e(TAG,linkId+" ++"+builder.toString());
-                    presenter.upLoadPrescription(linkId,builder.toString());
+                    //                    long linkId= daoSession.getLinkDao().queryBuilder().where(LinkDao.Properties.Id.eq(
+                    //                            daoSession.getUserDao().queryBuilder().where(UserDao.Properties.IsAlready.eq(1)).unique().getLinkId()
+                    //                    )).unique().getUId();
+                    //                    SharedPreferences sp = getSharedPreferences("linkId",MODE_PRIVATE);
+                    //                    String[] str = sp.getString("linkId","").split(",");
+                    //                    for(String str1 :str){
+                    //                        Log.e(TAG,str1);
+                    //                    }
+                    //                    long linkId = Long.valueOf(str[str.length-1]);
+                    Log.e(TAG, linkId + " ++" + builder.toString());
+                    presenter.upLoadPrescription(linkId, builder.toString());
                     finish();
                     break;
                 case EMPTY_MEDICINE:
@@ -141,6 +132,8 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
                     listName.remove(msg.arg1);
                     listWeight.remove(msg.arg1);
                     break;
+                default:
+                    break;
             }
         }
     };
@@ -149,7 +142,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
     //写入数据流
     OutputStream os;
     //ip地址和端口(公网,私有地址不行)
-    public static  String IP_ADD ;
+    public static String IP_ADD;
     public static final int PORT = 5566;
     private final int CONNECT_FAILED = 0;
     private final int NO_THIS_MEDICINE = 1;
@@ -163,11 +156,11 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
     private List<String> listWeight = new ArrayList<>();
     private String patientName;
     private String phoneNumber;
-    DaoSession daoSession= DbUtil.getDaosession();
+    DaoSession daoSession = DbUtil.getDaosession();
     MedicalListDao medicalListDao;
     private String patientId;
-    private SharedPreferences spf ;
-    private SharedPreferences.Editor editor ;
+    private SharedPreferences spf;
+    private SharedPreferences.Editor editor;
     /**
      * 数据
      */
@@ -192,10 +185,10 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
         mToolbar.setTitleTextColor(getResources().getColor(R.color.white));
         patientName = getIntent().getStringExtra("name");
         phoneNumber = getIntent().getStringExtra("number");
-        linkId = getIntent().getIntExtra("linkId",-1);
-        int randomNum = (int) ((Math.random()*4+1.9)*10);
-        mSex.setText(((randomNum/2)==1)?"男":"女");
-        mAge.setText(randomNum+"");
+        linkId = getIntent().getIntExtra("linkId", -1);
+        int randomNum = (int) ((Math.random() * 4 + 1.9) * 10);
+        mSex.setText(((randomNum / 2) == 1) ? "男" : "女");
+        mAge.setText(randomNum + "");
 
         mName.setText(patientName);
         mRegisterTime.setText("电话号码：   " + phoneNumber);
@@ -227,7 +220,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
         mWeightInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
         initData();
 
-        IP_ADD = spf.getString("ip",null);
+        IP_ADD = spf.getString("ip", null);
     }
 
     private void initData() {
@@ -243,7 +236,6 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
         return super.onCreatePanelMenu(featureId, menu);
     }
 
-    Thread sendTread = new SendMedicineThread();
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -261,7 +253,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
                         .setPositiveButton("确定",
                                 (dialog, which) -> {
                                     //进行相关逻辑
-                                    sendTread.start();
+                                    new SendMedicineThread().start();
                                     dialog.dismiss();
                                 }
                         )
@@ -341,10 +333,10 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
 
     @Override
     public void upLaodSucceed(PrescriptionInfo info) {
-        SharedPreferences sp = getSharedPreferences("linkIdForDoc",MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("linkIdForDoc", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        Log.e(TAG,linkId+"");
-        editor.putLong(patientName,linkId);
+        Log.e(TAG, linkId + "");
+        editor.putLong(patientName, linkId);
         editor.commit();
         DaoSession daoSession = DbUtil.getDaosession();
         MedicalListDao listDao = daoSession.getMedicalListDao();
@@ -397,7 +389,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
                     handler.sendMessage(msg);
                     Thread.sleep(sleep_interval);
                 }
-                if (flag){
+                if (flag) {
 
                     handler.sendEmptyMessage(SEND_SUCCESS);
                 }
@@ -405,7 +397,6 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
                 Log.e(TAG, "连接超时");
                 e.printStackTrace();
                 handler.sendEmptyMessage(CONNECT_FAILED);
-                sendTread = new SendMedicineThread();
             }
         }
     }
