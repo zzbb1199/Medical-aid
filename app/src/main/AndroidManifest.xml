@@ -49,15 +49,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".zxing.CaptureActivity"
-            android:label="@string/activity_scan_code">
-            <intent-filter>
-                <action android:name="com.zxr.medicalaid.zxing.CaptureActivity"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
+       
         <!--<activity-->
         <!--android:name="com.mob.tools.MobUIShell"-->
         <!--android:configChanges="keyboardHidden|orientation|screenSize"-->

@@ -79,7 +79,6 @@ public class MachineVerfyActivity extends BaseActivity {
                     Log.i(TAG, result);
                     String ip = spf.getString("ip", "");
                     if ("".equals(ip)) {
-                        Log.i(TAG, "ip is empty");
                         //此处弹窗
                         resetIPDialog();
                     } else {

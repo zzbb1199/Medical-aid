@@ -30,6 +30,7 @@ import com.zxr.medicalaid.mvp.ui.adapters.PrescribeTableAdapter;
 import com.zxr.medicalaid.mvp.view.UpLoadPrescriptionView;
 import com.zxr.medicalaid.utils.db.DbUtil;
 import com.zxr.medicalaid.utils.others.DialogUtils;
+import com.zxr.medicalaid.utils.others.NotifyDoctorUtils;
 import com.zxr.medicalaid.widget.CircleImageView;
 
 import java.io.OutputStream;
@@ -109,17 +110,9 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
                     for (int i = 0; i < listName.size(); i++) {
                         builder.append(listName.get(i) + "_" + listWeight.get(i) + ",");
                     }
-                    //                    long linkId= daoSession.getLinkDao().queryBuilder().where(LinkDao.Properties.Id.eq(
-                    //                            daoSession.getUserDao().queryBuilder().where(UserDao.Properties.IsAlready.eq(1)).unique().getLinkId()
-                    //                    )).unique().getUId();
-                    //                    SharedPreferences sp = getSharedPreferences("linkId",MODE_PRIVATE);
-                    //                    String[] str = sp.getString("linkId","").split(",");
-                    //                    for(String str1 :str){
-                    //                        Log.e(TAG,str1);
-                    //                    }
-                    //                    long linkId = Long.valueOf(str[str.length-1]);
                     Log.e(TAG, linkId + " ++" + builder.toString());
                     presenter.upLoadPrescription(linkId, builder.toString());
+                    NotifyDoctorUtils.notifyDoctor("重庆");
                     finish();
                     break;
                 case EMPTY_MEDICINE:
