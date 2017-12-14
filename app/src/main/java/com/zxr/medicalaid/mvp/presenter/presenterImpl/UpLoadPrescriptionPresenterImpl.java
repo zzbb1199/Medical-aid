@@ -37,14 +37,14 @@ public class UpLoadPrescriptionPresenterImpl extends BasePresenterImpl<UpLoadPre
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Log.i("upLoadError",e.getMessage());
                         mView.showMsg(e.getMessage());
-                        Log.e("tag",e.getMessage());
                     }
 
                     @Override
                     public void onNext(PrescriptionInfo info) {
                         mView.upLaodSucceed(info);
-                        Log.e("tag",info.getMessage());
                     }
                 });
     }

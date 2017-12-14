@@ -9,7 +9,11 @@ public class Constants {
 
     public static final String APP_MASTER_SECRET = "pifnkg6sduaxxv4fc5nw2bo5gmtg2bnk";
 
-
+    public static final String GUA_HAO = "gua_hao";
+    
+    public static final String QU_YAO = "qu_yao";
+    
+    public static final String CHA_KAN = "cha_kan";
 
     public static final String APP_KEY_TEST = "5a196580f43e4854f000004f";
 

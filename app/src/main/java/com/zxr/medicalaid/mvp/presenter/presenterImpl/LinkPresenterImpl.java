@@ -22,8 +22,10 @@ import rx.schedulers.Schedulers;
 
 public class LinkPresenterImpl extends BasePresenterImpl<LinkView> implements LinkPresenter {
     LinkModel model = new LinkModelImpl();
+
     @Inject
-    public LinkPresenterImpl(){}
+    public LinkPresenterImpl() {
+    }
 
     @Override
     public void linkDP(String doctorId, String patientId) {
@@ -38,16 +40,15 @@ public class LinkPresenterImpl extends BasePresenterImpl<LinkView> implements Li
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("TAG",e.getMessage());
+                        Log.e("TAG", e.getMessage());
                     }
 
                     @Override
                     public void onNext(LinkInfo linkInfo) {
-                        Log.e("TAG","linkInfo");
-                        if(CodeUtil.codeCheck(linkInfo.getCode()).equals("OK"))
-                        mView.linkSucceed(linkInfo);
-                        else {
-                            Log.e("TAG",CodeUtil.codeCheck(linkInfo.getCode()));
+                        if (CodeUtil.codeCheck(linkInfo.getCode()).equals("OK")) {
+                            mView.linkSucceed(linkInfo);
+                        } else {
+                            Log.e("TAG", CodeUtil.codeCheck(linkInfo.getCode()));
                         }
                     }
                 });
