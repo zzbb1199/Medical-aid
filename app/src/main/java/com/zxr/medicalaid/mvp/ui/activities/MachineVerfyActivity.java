@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,10 +39,7 @@ public class MachineVerfyActivity extends BaseActivity {
     @Override
     public void initViews() {
 
-        findViewById(R.id.intent_camera).setOnClickListener(v -> {
-            ToActivityUtil.toNextActivity(this, CaptureActivity.class);
-        });
-
+        findViewById(R.id.intent_camera).setOnClickListener(v -> ToActivityUtil.toNextActivity(this, CaptureActivity.class));
         android.support.v7.widget.Toolbar mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,7 +55,20 @@ public class MachineVerfyActivity extends BaseActivity {
 
 
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreatePanelMenu(int featureId, Menu menu) {
+        return super.onCreatePanelMenu(featureId, menu);
+    }
 
     @Override
     public int getLayout() {
@@ -107,8 +119,6 @@ public class MachineVerfyActivity extends BaseActivity {
                     Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
                 }
             }
-
-
         }
     }
 

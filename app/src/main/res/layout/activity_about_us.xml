@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.zxr.medicalaid.mvp.ui.activities.MachineVerfyActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.zxr.medicalaid.mvp.ui.activities.MachineVerfyActivity">
 
 
     <android.support.v7.widget.Toolbar
@@ -21,4 +22,4 @@
         android:gravity="center"
         android:text="点击通过二维码\n为您绑定硬件设备"
         android:textSize="@dimen/font_huge"/>
-</FrameLayout>
+</LinearLayout>
