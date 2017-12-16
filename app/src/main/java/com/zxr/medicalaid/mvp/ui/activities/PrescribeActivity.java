@@ -199,12 +199,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
                             listWeight.remove(position);
                             dialog.dismiss();
                         }
-                    }, "取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                    }, "取消", (dialog, which) -> dialog.dismiss());
                     return false;
                 }
         );

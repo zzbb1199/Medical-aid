@@ -82,6 +82,8 @@
         <service
             android:name=".mvp.ui.service.AlarmService"
             android:process=":remote"></service>
+        
+        <service android:name=".mvp.ui.service.HardLinkService"></service>
     </application>
 
 </manifest>
