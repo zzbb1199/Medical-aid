@@ -27,6 +27,7 @@ import com.zxr.medicalaid.mvp.ui.activities.base.PermissionActivity;
 import com.zxr.medicalaid.mvp.view.LinkView;
 import com.zxr.medicalaid.utils.db.DbUtil;
 import com.zxr.medicalaid.utils.db.IdUtil;
+import com.zxr.medicalaid.utils.others.NotifyDoctorUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,12 +44,11 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class QRActivity extends PermissionActivity implements LinkView {
-    public final static int SCANNING_REQUEST_CODE = 1;
+
     @Inject
     LinkPresenterImpl presenter;
     private boolean isFirstTime = true;
     DaoSession daoSession;
-    UserDao userDao;
 
 
     String patientAction = "";
@@ -86,7 +86,7 @@ public class QRActivity extends PermissionActivity implements LinkView {
     public void initViews() {
         SharedPreferences preferences = getSharedPreferences("isConnect", MODE_PRIVATE);
         String doctorId = preferences.getString("uId", "");
-        if (!doctorId.equals("")) {
+        if (patientAction.equals(Constants.CHA_KAN)) {
             //病人-已挂号
             Intent intent = new Intent(QRActivity.this, CurrentPatientsActivity.class);
             intent.putExtra("uId", doctorId);
@@ -125,6 +125,8 @@ public class QRActivity extends PermissionActivity implements LinkView {
                         presenter.linkDP(doctorId, IdUtil.getIdString());
                     } else if (patientAction.equals(Constants.QU_YAO)) {
                         //发送什么样的指令
+                        ToastUtils.showToast(this,"取药");
+                        NotifyDoctorUtils.notifyDoctor("取药");
                     }
 
                 });
@@ -133,7 +135,7 @@ public class QRActivity extends PermissionActivity implements LinkView {
 
 
     }
-    
+
 
     @Override
     public int getLayout() {

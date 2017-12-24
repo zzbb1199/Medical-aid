@@ -11,13 +11,16 @@ import com.zxr.medicalaid.mvp.model.sendtype.AndroidNotification;
 public class NotifyDoctorUtils {
     private static PushClient client = new PushClient();
 
-    public static void notifyDoctor(String name) {
+    public static void notifyDoctor(String text) {
         AndroidBroadcast broadcast = null;
         try {
-            broadcast = new AndroidBroadcast(Constants.APP_KEY_TEST, Constants.APP_MASTER_SECRET_TEST);
+            broadcast = new AndroidBroadcast(Constants.APP_KEY, Constants.APP_MASTER_SECRET);
             broadcast.setTicker("Android broadcast ticker");
-            broadcast.setTitle("您有新药方");
-            broadcast.setText(name);
+            broadcast.setTitle("您有一条新消息");
+            broadcast.setText(text);
+            broadcast.setPlaySound(true);
+            broadcast.setPlayVibrate(true);
+            broadcast.setPlayLights(true);
             broadcast.goAppAfterOpen();
             broadcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
             // TODO Set 'production_mode' to 'false' if it's a test device. 

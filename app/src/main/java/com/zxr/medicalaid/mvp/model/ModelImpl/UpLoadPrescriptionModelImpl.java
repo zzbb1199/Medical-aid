@@ -15,4 +15,6 @@ public class UpLoadPrescriptionModelImpl extends BaseModelImpl implements UpLoad
     public Observable<PrescriptionInfo> upLoadPrescription(long linkId, String message) {
         return api.uploadPrescription(linkId,message);
     }
+    
+
 }

@@ -5,14 +5,14 @@ package com.zxr.medicalaid.common;
  */
 
 public class Constants {
-    public static final String APP_KEY = "5a327de28f4a9d3d230002fd";
+    public static final String APP_KEY = "5a39cf538f4a9d31e200008d";
 
-    public static final String APP_MASTER_SECRET = "pifnkg6sduaxxv4fc5nw2bo5gmtg2bnk";
+    public static final String APP_MASTER_SECRET = "4mguwnuxgdakbkboiskrbstjxqlktmma";
 
     public static final String GUA_HAO = "gua_hao";
-    
+
     public static final String QU_YAO = "qu_yao";
-    
+
     public static final String CHA_KAN = "cha_kan";
 
     public static final String APP_KEY_TEST = "5a196580f43e4854f000004f";

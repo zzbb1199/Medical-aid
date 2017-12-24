@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Medical Aid</string>
+    <string name="app_name">社区医疗系统 </string>
     <string name="login">登录</string>
     <string name="register">注册</string>
     <string name="identifying_code">验证码</string>

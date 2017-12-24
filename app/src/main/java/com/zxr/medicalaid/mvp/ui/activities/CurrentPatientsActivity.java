@@ -140,6 +140,7 @@ public class CurrentPatientsActivity extends RxBusSubscriberBaseActivity impleme
                         intent.putExtra("number",listNumber.get(pos));
                         intent.putExtra("linkId",listId1.get(pos));
                         intent.putExtra("patientName",patientName.get(pos));
+                        intent.putExtra("patientId",listId.get(pos));
                         startActivity(intent);
                     }
                 }

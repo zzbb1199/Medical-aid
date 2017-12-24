@@ -31,6 +31,7 @@ import com.zxr.medicalaid.mvp.view.UpLoadPrescriptionView;
 import com.zxr.medicalaid.utils.db.DbUtil;
 import com.zxr.medicalaid.utils.others.DialogUtils;
 import com.zxr.medicalaid.utils.others.NotifyDoctorUtils;
+import com.zxr.medicalaid.utils.system.RxBus;
 import com.zxr.medicalaid.widget.CircleImageView;
 
 import java.io.OutputStream;
@@ -75,6 +76,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
     @Inject
     UpLoadPrescriptionPresenterImpl presenter;
     long linkId;
+    String patientId;
 
 
     private Handler handler = new Handler() {
@@ -107,12 +109,12 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
                 case SEND_SUCCESS:
                     ToastUtils.showToast(PrescribeActivity.this, "已成功发送");
                     StringBuilder builder = new StringBuilder();
-                    for (int i = 0; i < listName.size(); i++) {
-                        builder.append(listName.get(i) + "_" + listWeight.get(i) + ",");
+                    for (int i = 0; i < dbNameList.size(); i++) {
+                        builder.append(dbNameList.get(i) + "_" + dbWeightList.get(i) + ",");
                     }
-                    Log.e(TAG, linkId + " ++" + builder.toString());
+                    Log.i(TAG, linkId + " ++" + builder.toString());
                     presenter.upLoadPrescription(linkId, builder.toString());
-                    NotifyDoctorUtils.notifyDoctor("重庆");
+                    NotifyDoctorUtils.notifyDoctor("药方");
                     finish();
                     break;
                 case EMPTY_MEDICINE:
@@ -124,6 +126,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
                     dbWeightList.add(listWeight.get(msg.arg1));
                     listName.remove(msg.arg1);
                     listWeight.remove(msg.arg1);
+
                     break;
                 default:
                     break;
@@ -149,9 +152,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
     private List<String> listWeight = new ArrayList<>();
     private String patientName;
     private String phoneNumber;
-    DaoSession daoSession = DbUtil.getDaosession();
-    MedicalListDao medicalListDao;
-    private String patientId;
+
     private SharedPreferences spf;
     private SharedPreferences.Editor editor;
     /**
@@ -179,6 +180,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
         patientName = getIntent().getStringExtra("name");
         phoneNumber = getIntent().getStringExtra("number");
         linkId = getIntent().getIntExtra("linkId", -1);
+        patientId = getIntent().getStringExtra("patientId");
         int randomNum = (int) ((Math.random() * 4 + 1.9) * 10);
         mSex.setText(((randomNum / 2) == 1) ? "男" : "女");
         mAge.setText(randomNum + "");
@@ -334,6 +336,7 @@ public class PrescribeActivity extends BaseActivity implements UpLoadPrescriptio
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         list.setDate(dateFormat.format(new Date()));
         listDao.insert(list);
+        RxBus.getDefault().post(patientId);
     }
 
 
