@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
+
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.zxr.medicalaid"
         minSdkVersion 15
