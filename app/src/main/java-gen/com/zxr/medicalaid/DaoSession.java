@@ -10,11 +10,13 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
 import de.greenrobot.dao.internal.DaoConfig;
 
 import com.zxr.medicalaid.User;
+import com.zxr.medicalaid.Link;
 import com.zxr.medicalaid.Date;
 import com.zxr.medicalaid.MedicalList;
 import com.zxr.medicalaid.MedicalDateInfo;
 
 import com.zxr.medicalaid.UserDao;
+import com.zxr.medicalaid.LinkDao;
 import com.zxr.medicalaid.DateDao;
 import com.zxr.medicalaid.MedicalListDao;
 import com.zxr.medicalaid.MedicalDateInfoDao;
@@ -29,11 +31,13 @@ import com.zxr.medicalaid.MedicalDateInfoDao;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig userDaoConfig;
+    private final DaoConfig linkDaoConfig;
     private final DaoConfig dateDaoConfig;
     private final DaoConfig medicalListDaoConfig;
     private final DaoConfig medicalDateInfoDaoConfig;
 
     private final UserDao userDao;
+    private final LinkDao linkDao;
     private final DateDao dateDao;
     private final MedicalListDao medicalListDao;
     private final MedicalDateInfoDao medicalDateInfoDao;
@@ -45,6 +49,9 @@ public class DaoSession extends AbstractDaoSession {
         userDaoConfig = daoConfigMap.get(UserDao.class).clone();
         userDaoConfig.initIdentityScope(type);
 
+        linkDaoConfig = daoConfigMap.get(LinkDao.class).clone();
+        linkDaoConfig.initIdentityScope(type);
+
         dateDaoConfig = daoConfigMap.get(DateDao.class).clone();
         dateDaoConfig.initIdentityScope(type);
 
@@ -55,11 +62,13 @@ public class DaoSession extends AbstractDaoSession {
         medicalDateInfoDaoConfig.initIdentityScope(type);
 
         userDao = new UserDao(userDaoConfig, this);
+        linkDao = new LinkDao(linkDaoConfig, this);
         dateDao = new DateDao(dateDaoConfig, this);
         medicalListDao = new MedicalListDao(medicalListDaoConfig, this);
         medicalDateInfoDao = new MedicalDateInfoDao(medicalDateInfoDaoConfig, this);
 
         registerDao(User.class, userDao);
+        registerDao(Link.class, linkDao);
         registerDao(Date.class, dateDao);
         registerDao(MedicalList.class, medicalListDao);
         registerDao(MedicalDateInfo.class, medicalDateInfoDao);
@@ -67,6 +76,7 @@ public class DaoSession extends AbstractDaoSession {
     
     public void clear() {
         userDaoConfig.getIdentityScope().clear();
+        linkDaoConfig.getIdentityScope().clear();
         dateDaoConfig.getIdentityScope().clear();
         medicalListDaoConfig.getIdentityScope().clear();
         medicalDateInfoDaoConfig.getIdentityScope().clear();
@@ -74,6 +84,10 @@ public class DaoSession extends AbstractDaoSession {
 
     public UserDao getUserDao() {
         return userDao;
+    }
+
+    public LinkDao getLinkDao() {
+        return linkDao;
     }
 
     public DateDao getDateDao() {

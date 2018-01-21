@@ -1,5 +1,7 @@
 package com.zxr.medicalaid.mvp.view;
 
+
+import com.zxr.medicalaid.mvp.entity.moudle.LinkInfo;
 import com.zxr.medicalaid.mvp.view.base.BaseView;
 
 /**
@@ -7,4 +9,5 @@ import com.zxr.medicalaid.mvp.view.base.BaseView;
  */
 
 public interface LinkView extends BaseView {
+    void linkSucceed(LinkInfo linkInfo);
 }

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.stetho.Stetho;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.zxr.medicalaid.dagger.component.ApplicationComponent;
 import com.zxr.medicalaid.dagger.component.DaggerApplicationComponent;
 import com.zxr.medicalaid.dagger.module.ApplicationModule;
@@ -34,7 +35,8 @@ public class App extends Application {
         initApplicationComponent();
         initGallerFinal();
         Stetho.initializeWithDefaults(this);
-        this.context = this;
+        ZXingLibrary.initDisplayOpinion(this);
+        context = this;
     }
 
     private void initGallerFinal() {

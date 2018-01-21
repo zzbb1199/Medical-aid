@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.zxr.medicalaid.mvp.ui.activities.AboutUsActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.zxr.medicalaid.mvp.ui.activities.MachineVerfyActivity">
 
-    <WebView
-        android:id="@+id/about_us_web_view"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/WhiteToolbarStyle"></android.support.v7.widget.Toolbar>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/intent_camera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="点击通过二维码\n为您绑定硬件设备"
+        android:textSize="@dimen/font_huge"/>
+</LinearLayout>

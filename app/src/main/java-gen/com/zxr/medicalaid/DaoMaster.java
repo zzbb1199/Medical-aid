@@ -9,6 +9,7 @@ import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 
 import com.zxr.medicalaid.UserDao;
+import com.zxr.medicalaid.LinkDao;
 import com.zxr.medicalaid.DateDao;
 import com.zxr.medicalaid.MedicalListDao;
 import com.zxr.medicalaid.MedicalDateInfoDao;
@@ -23,6 +24,7 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
         UserDao.createTable(db, ifNotExists);
+        LinkDao.createTable(db, ifNotExists);
         DateDao.createTable(db, ifNotExists);
         MedicalListDao.createTable(db, ifNotExists);
         MedicalDateInfoDao.createTable(db, ifNotExists);
@@ -31,6 +33,7 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
         UserDao.dropTable(db, ifExists);
+        LinkDao.dropTable(db, ifExists);
         DateDao.dropTable(db, ifExists);
         MedicalListDao.dropTable(db, ifExists);
         MedicalDateInfoDao.dropTable(db, ifExists);
@@ -66,6 +69,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
         registerDaoClass(UserDao.class);
+        registerDaoClass(LinkDao.class);
         registerDaoClass(DateDao.class);
         registerDaoClass(MedicalListDao.class);
         registerDaoClass(MedicalDateInfoDao.class);

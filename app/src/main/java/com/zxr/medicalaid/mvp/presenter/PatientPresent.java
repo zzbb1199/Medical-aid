@@ -7,5 +7,5 @@ import com.zxr.medicalaid.mvp.presenter.base.BasePresenter;
  */
 
 public interface PatientPresent extends BasePresenter {
-    void getPatient(String doctorId,int currentPage);
+    void getPatient(String doctorId,String type,String status,int currentPage);
 }

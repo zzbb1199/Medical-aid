@@ -38,14 +38,13 @@ public class DrugInfoPresenterImpl extends BasePresenterImpl<SearchView> impleme
 
                     @Override
                     public void onNext(DrugInfo drugInfoData) {
-                        Log.e("TAG","这里OK的");
-                        mView.showMsg(drugInfoData.getChineseName());
+                        mView.showDrugInfo(drugInfoData);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        mView.showMsg(error);
+                        Log.e("TAG",e.getMessage());
                     }
                 });
     }

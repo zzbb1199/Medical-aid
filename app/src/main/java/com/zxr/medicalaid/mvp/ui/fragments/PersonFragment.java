@@ -7,15 +7,17 @@ import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.github.lazylibrary.util.ToastUtils;
 import com.zxr.medicalaid.DaoSession;
 import com.zxr.medicalaid.R;
 import com.zxr.medicalaid.User;
 import com.zxr.medicalaid.UserDao;
-import com.zxr.medicalaid.mvp.ui.activities.AboutUsActivity;
+
 import com.zxr.medicalaid.mvp.ui.activities.InquiryActivity;
+import com.zxr.medicalaid.mvp.ui.activities.MachineVerfyActivity;
 import com.zxr.medicalaid.mvp.ui.activities.QbShowActivity;
-import com.zxr.medicalaid.mvp.ui.activities.TreatmentRecordActivity;
 import com.zxr.medicalaid.mvp.ui.activities.UserInfoEditActivity;
 import com.zxr.medicalaid.mvp.ui.fragments.base.RxBusFragment;
 import com.zxr.medicalaid.net.ResponseCons;
@@ -48,7 +50,7 @@ public class PersonFragment extends RxBusFragment {
     MaskableImageView mPresribeBt;
     @InjectView(R.id.caution_bt)
     MaskableImageView mCautionBt;
-    @InjectView(R.id.about_us_bt)
+    @InjectView(R.id.machine)
     MaskableImageView mAboutUsBt;
     @InjectView(R.id.treat_record_bt)
     MaskableImageView mTreatRecordBt;
@@ -142,14 +144,27 @@ public class PersonFragment extends RxBusFragment {
     }
 
 
-    @OnClick({R.id.presribe_bt, R.id.about_us_bt, R.id.caution_bt, R.id.treat_record_bt, R.id.generate_qb})
+    @OnClick({R.id.presribe_bt, R.id.machine, R.id.caution_bt, R.id.treat_record_bt, R.id.generate_qb})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.presribe_bt:
-                ToActivityUtil.toNextActivity(getContext(), InquiryActivity.class);
+                User user = userDao.queryBuilder().where(UserDao.Properties.IsAlready.eq(1)).unique();
+                if (user.getType().equals("doctor")) {
+                    Intent intent2 = new Intent(getContext(), InquiryActivity.class);
+                    intent2.putExtra("type", user.getType());
+                    startActivity(intent2);
+                } else {
+                    Toast.makeText(getContext(), "只有医师才有权限哦", Toast.LENGTH_SHORT).show();
+                }
                 break;
-            case R.id.about_us_bt:
-                ToActivityUtil.toNextActivity(getContext(), AboutUsActivity.class);
+            case R.id.machine:
+                //判断身份
+                User user2 = userDao.queryBuilder().where(UserDao.Properties.IsAlready.eq(1)).unique();
+                if (user2.getType().equals("patient")) {
+                    ToastUtils.showToast(getContext(), "只有医生才能控制小车呢");
+                } else {
+                    ToActivityUtil.toNextActivity(getContext(), MachineVerfyActivity.class);
+                }
                 break;
             case R.id.caution_bt:
                 //跳转到系统的闹钟
@@ -157,7 +172,14 @@ public class PersonFragment extends RxBusFragment {
                 startActivity(alarm);
                 break;
             case R.id.treat_record_bt:
-                ToActivityUtil.toNextActivity(getContext(), TreatmentRecordActivity.class);
+                User user1 = userDao.queryBuilder().where(UserDao.Properties.IsAlready.eq(1)).unique();
+                if (user1.getType().equals("patient")) {
+                    Intent inten1 = new Intent(getContext(), InquiryActivity.class);
+                    inten1.putExtra("type", user1.getType());
+                    startActivity(inten1);
+                } else {
+                    Toast.makeText(getContext(), "只有患者才有权限哦", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.generate_qb:
                 //可能有bug
@@ -179,7 +201,7 @@ public class PersonFragment extends RxBusFragment {
                             .show();
                 }
                 break;
-
+                default:break;
         }
     }
 
@@ -194,7 +216,10 @@ public class PersonFragment extends RxBusFragment {
                                 if (name == null) {
                                     return;
                                 }
-                                userName.setText(doEncode(name, ResponseCons.KEY_NAME));
+                                if (userName != null) {
+                                    userName.setText(doEncode(name, ResponseCons.KEY_NAME));
+                                }
+
                             }
                             Log.e(TAG, s);
                         }

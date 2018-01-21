@@ -29,8 +29,8 @@ public class PatientListPresenterImpl extends BasePresenterImpl<PatientListView>
 
     }
     @Override
-    public void getPatient(String doctorId, int currentPage) {
-        model.getPatient(doctorId,currentPage)
+    public void getPatient(String doctorId,String type,String status,int currentPage) {
+        model.getPatient(doctorId, type, status, currentPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<PatientInfo>() {
@@ -46,7 +46,7 @@ public class PatientListPresenterImpl extends BasePresenterImpl<PatientListView>
 
                     @Override
                     public void onNext(PatientInfo patientInfo) {
-                        Log.e("TAG","请求列表成功");
+                        Log.e("TAG","请求列表成功"+patientInfo.getCode()+patientInfo.getMessage());
                         if(CodeUtil.codeCheck(patientInfo.getCode()).equals("OK"))
                         mView.showPatient(patientInfo);
                         else Toast.makeText(App.getBaseApplicationContext(),CodeUtil.codeCheck(patientInfo.getCode()),Toast.LENGTH_SHORT).show();

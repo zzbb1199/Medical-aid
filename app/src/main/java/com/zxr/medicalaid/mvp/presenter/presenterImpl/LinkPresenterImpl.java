@@ -1,9 +1,7 @@
 package com.zxr.medicalaid.mvp.presenter.presenterImpl;
 
 import android.util.Log;
-import android.widget.Toast;
 
-import com.zxr.medicalaid.App;
 import com.zxr.medicalaid.mvp.entity.moudle.LinkInfo;
 import com.zxr.medicalaid.mvp.model.LinkModel;
 import com.zxr.medicalaid.mvp.model.ModelImpl.LinkModelImpl;
@@ -24,8 +22,10 @@ import rx.schedulers.Schedulers;
 
 public class LinkPresenterImpl extends BasePresenterImpl<LinkView> implements LinkPresenter {
     LinkModel model = new LinkModelImpl();
+
     @Inject
-    public LinkPresenterImpl(){}
+    public LinkPresenterImpl() {
+    }
 
     @Override
     public void linkDP(String doctorId, String patientId) {
@@ -40,15 +40,15 @@ public class LinkPresenterImpl extends BasePresenterImpl<LinkView> implements Li
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("TAG",e.getMessage());
+                        Log.e("TAG", e.getMessage());
                     }
 
                     @Override
                     public void onNext(LinkInfo linkInfo) {
-                        if(CodeUtil.codeCheck(linkInfo.getCode()).equals("OK"))
-                        mView.showMsg("");
-                        else {
-                            Toast.makeText(App.getBaseApplicationContext(),CodeUtil.codeCheck(linkInfo.getCode()),Toast.LENGTH_SHORT).show();
+                        if (CodeUtil.codeCheck(linkInfo.getCode()).equals("OK")) {
+                            mView.linkSucceed(linkInfo);
+                        } else {
+                            Log.e("TAG", CodeUtil.codeCheck(linkInfo.getCode()));
                         }
                     }
                 });

@@ -7,17 +7,18 @@ import java.util.List;
  */
 
 public class PatientInfo {
+
     /**
      * code : 200
      * message : OK#成功返回
-     * body : {"page":{"totalNumber":1,"currentPage":1,"totalPage":1,"pageNumber":20,"dbIndex":0,"dbNumber":20},"list":[{"idString":"bd20722c436ba64d92b2930cc8def0cbf","nickName":"cb23919941f44caa88a903b3281076d5","phoneNumber":"5cf54b2aa42b733d00f181c4aa76ba20","type":"patient"}]}
+     * body : {"page":{"totalNumber":1,"currentPage":1,"totalPage":1,"pageNumber":20,"dbIndex":0,"dbNumber":20},"list":[{"id":98,"doctor":null,"patient":{"idString":"ce8c32cb5a5c7830036a1acd437b78af6","nickName":"周家豪二号","phoneNumber":"15340504859","type":"patient"},"status":"linking","time":"2017-08-06 11:55:30.0"}]}
      */
 
     private int code;
     private String message;
     /**
      * page : {"totalNumber":1,"currentPage":1,"totalPage":1,"pageNumber":20,"dbIndex":0,"dbNumber":20}
-     * list : [{"idString":"bd20722c436ba64d92b2930cc8def0cbf","nickName":"cb23919941f44caa88a903b3281076d5","phoneNumber":"5cf54b2aa42b733d00f181c4aa76ba20","type":"patient"}]
+     * list : [{"id":98,"doctor":null,"patient":{"idString":"ce8c32cb5a5c7830036a1acd437b78af6","nickName":"周家豪二号","phoneNumber":"15340504859","type":"patient"},"status":"linking","time":"2017-08-06 11:55:30.0"}]
      */
 
     private BodyBean body;
@@ -58,10 +59,11 @@ public class PatientInfo {
 
         private PageBean page;
         /**
-         * idString : bd20722c436ba64d92b2930cc8def0cbf
-         * nickName : cb23919941f44caa88a903b3281076d5
-         * phoneNumber : 5cf54b2aa42b733d00f181c4aa76ba20
-         * type : patient
+         * id : 98
+         * doctor : null
+         * patient : {"idString":"ce8c32cb5a5c7830036a1acd437b78af6","nickName":"周家豪二号","phoneNumber":"15340504859","type":"patient"}
+         * status : linking
+         * time : 2017-08-06 11:55:30.0
          */
 
         private List<ListBean> list;
@@ -140,41 +142,134 @@ public class PatientInfo {
         }
 
         public static class ListBean {
-            private String idString;
-            private String nickName;
-            private String phoneNumber;
-            private String type;
+            private int id;
+            private DoctorBean doctor;
+            /**
+             * idString : ce8c32cb5a5c7830036a1acd437b78af6
+             * nickName : 周家豪二号
+             * phoneNumber : 15340504859
+             * type : patient
+             */
 
-            public String getIdString() {
-                return idString;
+            private PatientBean patient;
+            private String status;
+            private String time;
+
+            public int getId() {
+                return id;
             }
 
-            public void setIdString(String idString) {
-                this.idString = idString;
+            public void setId(int id) {
+                this.id = id;
             }
 
-            public String getNickName() {
-                return nickName;
+            public DoctorBean getDoctor() {
+                return doctor;
             }
 
-            public void setNickName(String nickName) {
-                this.nickName = nickName;
+            public void setDoctor(DoctorBean doctor) {
+                this.doctor = doctor;
             }
 
-            public String getPhoneNumber() {
-                return phoneNumber;
+            public PatientBean getPatient() {
+                return patient;
             }
 
-            public void setPhoneNumber(String phoneNumber) {
-                this.phoneNumber = phoneNumber;
+            public void setPatient(PatientBean patient) {
+                this.patient = patient;
             }
 
-            public String getType() {
-                return type;
+            public String getStatus() {
+                return status;
             }
 
-            public void setType(String type) {
-                this.type = type;
+            public void setStatus(String status) {
+                this.status = status;
+            }
+
+            public String getTime() {
+                return time;
+            }
+
+            public void setTime(String time) {
+                this.time = time;
+            }
+
+            public static class PatientBean {
+                private String idString;
+                private String nickName;
+                private String phoneNumber;
+                private String type;
+
+                public String getIdString() {
+                    return idString;
+                }
+
+                public void setIdString(String idString) {
+                    this.idString = idString;
+                }
+
+                public String getNickName() {
+                    return nickName;
+                }
+
+                public void setNickName(String nickName) {
+                    this.nickName = nickName;
+                }
+
+                public String getPhoneNumber() {
+                    return phoneNumber;
+                }
+
+                public void setPhoneNumber(String phoneNumber) {
+                    this.phoneNumber = phoneNumber;
+                }
+
+                public String getType() {
+                    return type;
+                }
+
+                public void setType(String type) {
+                    this.type = type;
+                }
+            }
+            public static class DoctorBean {
+                private String idString;
+                private String nickName;
+                private String phoneNumber;
+                private String type;
+
+                public String getIdString() {
+                    return idString;
+                }
+
+                public void setIdString(String idString) {
+                    this.idString = idString;
+                }
+
+                public String getNickName() {
+                    return nickName;
+                }
+
+                public void setNickName(String nickName) {
+                    this.nickName = nickName;
+                }
+
+                public String getPhoneNumber() {
+                    return phoneNumber;
+                }
+
+                public void setPhoneNumber(String phoneNumber) {
+                    this.phoneNumber = phoneNumber;
+                }
+
+                public String getType() {
+                    return type;
+                }
+
+                public void setType(String type) {
+                    this.type = type;
+                }
             }
         }
     }

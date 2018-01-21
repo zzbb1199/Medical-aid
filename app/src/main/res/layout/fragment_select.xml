@@ -70,4 +70,6 @@
         app:layout_constraintGuide_percent="0.5"
         android:orientation="horizontal" />
 
+    
+   
 </android.support.constraint.ConstraintLayout>

@@ -3,7 +3,7 @@
 
     <!--font size-->
     <dimen name="font_alarm">40sp</dimen>
-    <dimen name="font_huge">25sp</dimen>
+    <dimen name="font_huge">24dp</dimen>
     <dimen name="font_large">18sp</dimen>
     <dimen name="font_normal">15sp</dimen>
     <dimen name="font_small">12sp</dimen>

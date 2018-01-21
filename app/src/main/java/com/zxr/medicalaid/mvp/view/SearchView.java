@@ -1,5 +1,6 @@
 package com.zxr.medicalaid.mvp.view;
 
+import com.zxr.medicalaid.mvp.entity.moudle.DrugInfo;
 import com.zxr.medicalaid.mvp.view.base.BaseView;
 
 /**
@@ -7,4 +8,5 @@ import com.zxr.medicalaid.mvp.view.base.BaseView;
  */
 
 public interface SearchView extends BaseView{
+    void showDrugInfo(DrugInfo drugInfo);
 }

@@ -23,8 +23,11 @@ import com.zxr.medicalaid.dagger.module.ActivityModule;
 import com.zxr.medicalaid.dagger.scope.ContextLife;
 import com.zxr.medicalaid.dagger.scope.PerActivity;
 import com.zxr.medicalaid.mvp.ui.activities.CurrentPatientsActivity;
+import com.zxr.medicalaid.mvp.ui.activities.InquiryActivity;
 import com.zxr.medicalaid.mvp.ui.activities.LoginActivity;
 import com.zxr.medicalaid.mvp.ui.activities.PasswordEditActivity;
+import com.zxr.medicalaid.mvp.ui.activities.PrescribeActivity;
+import com.zxr.medicalaid.mvp.ui.activities.PrescribeRecordActivity;
 import com.zxr.medicalaid.mvp.ui.activities.QRActivity;
 import com.zxr.medicalaid.mvp.ui.activities.QbShowActivity;
 import com.zxr.medicalaid.mvp.ui.activities.RegisterActivity;
@@ -50,5 +53,9 @@ public interface ActivityComponent {
     void inject(QRActivity currentPatientsActivity);
     void inject(QbShowActivity qbShowActivity);
     void inject(PasswordEditActivity passwordEditActivity);
+    void inject(InquiryActivity passwordEditActivity);
+    void inject(PrescribeRecordActivity passwordEditActivity);
+    void inject(PrescribeActivity passwordEditActivity);
     void inject(UserInfoEditActivity userInfoEditActivity);
+
 }

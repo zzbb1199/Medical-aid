@@ -1,11 +1,14 @@
 package com.zxr.medicalaid;
 
+import java.util.List;
+import java.util.ArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
+import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.internal.DaoConfig;
 
 import com.zxr.medicalaid.User;
@@ -30,7 +33,10 @@ public class UserDao extends AbstractDao<User, Long> {
         public final static Property Password = new Property(4, String.class, "password", false, "PASSWORD");
         public final static Property Type = new Property(5, String.class, "type", false, "TYPE");
         public final static Property IsAlready = new Property(6, Integer.class, "isAlready", false, "IS_ALREADY");
+        public final static Property LinkId = new Property(7, Long.class, "linkId", false, "LINK_ID");
     };
+
+    private DaoSession daoSession;
 
 
     public UserDao(DaoConfig config) {
@@ -39,6 +45,7 @@ public class UserDao extends AbstractDao<User, Long> {
     
     public UserDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -51,7 +58,8 @@ public class UserDao extends AbstractDao<User, Long> {
                 "'PHONE_NUMBER' TEXT," + // 3: phoneNumber
                 "'PASSWORD' TEXT," + // 4: password
                 "'TYPE' TEXT," + // 5: type
-                "'IS_ALREADY' INTEGER);"); // 6: isAlready
+                "'IS_ALREADY' INTEGER," + // 6: isAlready
+                "'LINK_ID' INTEGER);"); // 7: linkId
     }
 
     /** Drops the underlying database table. */
@@ -99,6 +107,17 @@ public class UserDao extends AbstractDao<User, Long> {
         if (isAlready != null) {
             stmt.bindLong(7, isAlready);
         }
+ 
+        Long linkId = entity.getLinkId();
+        if (linkId != null) {
+            stmt.bindLong(8, linkId);
+        }
+    }
+
+    @Override
+    protected void attachEntity(User entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     /** @inheritdoc */
@@ -117,7 +136,8 @@ public class UserDao extends AbstractDao<User, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // phoneNumber
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // password
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // type
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6) // isAlready
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // isAlready
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7) // linkId
         );
         return entity;
     }
@@ -132,6 +152,7 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setPassword(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setType(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setIsAlready(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setLinkId(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
      }
     
     /** @inheritdoc */
@@ -157,4 +178,95 @@ public class UserDao extends AbstractDao<User, Long> {
         return true;
     }
     
+    private String selectDeep;
+
+    protected String getSelectDeep() {
+        if (selectDeep == null) {
+            StringBuilder builder = new StringBuilder("SELECT ");
+            SqlUtils.appendColumns(builder, "T", getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T0", daoSession.getLinkDao().getAllColumns());
+            builder.append(" FROM USER T");
+            builder.append(" LEFT JOIN LINK T0 ON T.'LINK_ID'=T0.'_id'");
+            builder.append(' ');
+            selectDeep = builder.toString();
+        }
+        return selectDeep;
+    }
+    
+    protected User loadCurrentDeep(Cursor cursor, boolean lock) {
+        User entity = loadCurrent(cursor, 0, lock);
+        int offset = getAllColumns().length;
+
+        Link link = loadCurrentOther(daoSession.getLinkDao(), cursor, offset);
+        entity.setLink(link);
+
+        return entity;    
+    }
+
+    public User loadDeep(Long key) {
+        assertSinglePk();
+        if (key == null) {
+            return null;
+        }
+
+        StringBuilder builder = new StringBuilder(getSelectDeep());
+        builder.append("WHERE ");
+        SqlUtils.appendColumnsEqValue(builder, "T", getPkColumns());
+        String sql = builder.toString();
+        
+        String[] keyArray = new String[] { key.toString() };
+        Cursor cursor = db.rawQuery(sql, keyArray);
+        
+        try {
+            boolean available = cursor.moveToFirst();
+            if (!available) {
+                return null;
+            } else if (!cursor.isLast()) {
+                throw new IllegalStateException("Expected unique result, but count was " + cursor.getCount());
+            }
+            return loadCurrentDeep(cursor, true);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+    /** Reads all available rows from the given cursor and returns a list of new ImageTO objects. */
+    public List<User> loadAllDeepFromCursor(Cursor cursor) {
+        int count = cursor.getCount();
+        List<User> list = new ArrayList<User>(count);
+        
+        if (cursor.moveToFirst()) {
+            if (identityScope != null) {
+                identityScope.lock();
+                identityScope.reserveRoom(count);
+            }
+            try {
+                do {
+                    list.add(loadCurrentDeep(cursor, false));
+                } while (cursor.moveToNext());
+            } finally {
+                if (identityScope != null) {
+                    identityScope.unlock();
+                }
+            }
+        }
+        return list;
+    }
+    
+    protected List<User> loadDeepAllAndCloseCursor(Cursor cursor) {
+        try {
+            return loadAllDeepFromCursor(cursor);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+
+    /** A raw-style query where you can pass any WHERE clause and arguments. */
+    public List<User> queryDeep(String where, String... selectionArg) {
+        Cursor cursor = db.rawQuery(getSelectDeep() + where, selectionArg);
+        return loadDeepAllAndCloseCursor(cursor);
+    }
+ 
 }

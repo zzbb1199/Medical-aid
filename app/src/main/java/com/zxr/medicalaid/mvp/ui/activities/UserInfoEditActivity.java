@@ -99,8 +99,9 @@ public class UserInfoEditActivity extends BaseActivity implements ChangUserNameV
             case R.id.finish_bt:
                 mUserName.setCursorVisible(false);
                 //进行头像和姓名修改等上传
-                String newName = EncodeUtil.doEncrypt(mUserName.getText().toString(), ResponseCons.KEY_NAME);
-                if (newName == null){
+                String changName = mUserName.getText().toString();
+                String newName = EncodeUtil.doEncrypt(changName, ResponseCons.KEY_NAME);
+                if (changName == null || changName.equals("")){
                     ToastUtils.showToast(this,"暂未进行修改呢");
                     return;
                 }
@@ -117,7 +118,7 @@ public class UserInfoEditActivity extends BaseActivity implements ChangUserNameV
                 DbUtil.getDaosession().getMedicalListDao().deleteAll();
                 ToActivityUtil.toNextActivity(this, LoginActivity.class);
                 ActivityStack.getScreenManager().clearAllActivity();
-                SharedPreferences preferences = getSharedPreferences("isConnect", MODE_PRIVATE);
+                SharedPreferences preferences =getSharedPreferences("isConnect",MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.commit();

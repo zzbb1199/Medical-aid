@@ -32,7 +32,6 @@ import com.zxr.medicalaid.mvp.ui.activities.base.RxBusSubscriberBaseActivity;
 import com.zxr.medicalaid.mvp.ui.adapters.PatientListAdapter;
 import com.zxr.medicalaid.mvp.view.CancleView;
 import com.zxr.medicalaid.mvp.view.PatientListView;
-import com.zxr.medicalaid.net.ResponseCons;
 import com.zxr.medicalaid.utils.db.IdUtil;
 import com.zxr.medicalaid.utils.system.RxBus;
 
@@ -47,6 +46,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
 
 import butterknife.InjectView;
+
 
 /**
  * 区分药师和病人
@@ -70,6 +70,8 @@ public class CurrentPatientsActivity extends RxBusSubscriberBaseActivity impleme
      * adapter
      */
     private PatientListAdapter adapter;
+    private static final String LINKING = "linking";
+    private static final String HISTORY = "history";
     /**
      *
      */
@@ -86,6 +88,8 @@ public class CurrentPatientsActivity extends RxBusSubscriberBaseActivity impleme
     private List<Person> lists = new ArrayList<>();
     private List<String> listId = new ArrayList<>();
     private List<String> listNumber = new ArrayList<>();
+    private List<Integer> listId1 = new ArrayList<>();
+    private List<String> patientName = new ArrayList<>();
 
     @Override
     public void initInjector() {
@@ -109,6 +113,15 @@ public class CurrentPatientsActivity extends RxBusSubscriberBaseActivity impleme
         if (!uId.equals("")) {
             doctorId = uId;
         }
+        Log.e(TAG,"收到");
+        if (doctorId != null) {
+            Log.e(TAG, doctorId);
+            type = PATIENT;
+            presenter.getPatient(doctorId,"doctor",LINKING,1);
+        } else {
+            presenter.getPatient(IdUtil.getIdString(),"doctor",LINKING,1);
+        }
+
 
         //recyclerview
         //adapter设置
@@ -122,10 +135,12 @@ public class CurrentPatientsActivity extends RxBusSubscriberBaseActivity impleme
                     } else {
 //                        Toast.makeText(this, "医生，点击进行开药", Toast.LENGTH_SHORT).show();
 //                        ToActivityUtil.toNextActivity(mContext, PrescribeActivity.class);
-                        Intent intent = new Intent(CurrentPatientsActivity.this, PrescribeActivity.class);
-                        intent.putExtra("name", lists.get(pos).getName());
-                        intent.putExtra("number", listNumber.get(pos));
-                        intent.putExtra("id", listId.get(pos));
+                        Intent intent = new Intent(CurrentPatientsActivity.this,PrescribeActivity.class);
+                        intent.putExtra("name",lists.get(pos).getName());
+                        intent.putExtra("number",listNumber.get(pos));
+                        intent.putExtra("linkId",listId1.get(pos));
+                        intent.putExtra("patientName",patientName.get(pos));
+                        intent.putExtra("patientId",listId.get(pos));
                         startActivity(intent);
                     }
                 }
@@ -245,9 +260,9 @@ public class CurrentPatientsActivity extends RxBusSubscriberBaseActivity impleme
         if (doctorId != null) {
             Log.e(TAG, doctorId);
             type = PATIENT;
-            presenter.getPatient(doctorId, 1);
+            presenter.getPatient(doctorId,"doctor",LINKING,1);
         } else {
-            presenter.getPatient(IdUtil.getIdString(), 1);
+            presenter.getPatient(IdUtil.getIdString(),"doctor",LINKING,1);
         }
     }
 
@@ -319,11 +334,15 @@ public class CurrentPatientsActivity extends RxBusSubscriberBaseActivity impleme
         lists.clear();
         listNumber.clear();
         for (int i = 0; i < patientInfo.getBody().getList().size(); i++) {
-            String name = doEncode(patientInfo.getBody().getList().get(i).getNickName(), ResponseCons.KEY_NAME);
-            String phoneNumber = doEncode(patientInfo.getBody().getList().get(i).getPhoneNumber(), ResponseCons.KEY_PHONENUMBER);
-            Person person = new Person(name, "", "120.77.87.78:8080/arti-sports/image//user15.png");
+            String name =patientInfo.getBody().getList().get(i).getPatient().getNickName();
+            String phoneNumber= patientInfo.getBody().getList().get(i).getPatient().getPhoneNumber();
+            Log.e(TAG,patientInfo.getBody().getList().get(i).getPatient().getNickName());
+            Person person = new Person(name, phoneNumber, "120.77.87.78:8080/arti-sports/image//user15.png");
+
             lists.add(person);
-            listId.add(patientInfo.getBody().getList().get(i).getIdString());
+            patientName.add(name);
+            listId.add(patientInfo.getBody().getList().get(i).getPatient().getIdString());
+            listId1.add(patientInfo.getBody().getList().get(i).getId());
             listNumber.add(phoneNumber);
         }
         adapter.addAll(lists);
