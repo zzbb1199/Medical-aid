@@ -1,4 +1,4 @@
-# Medical-aid
+﻿# Medical-aid
 辅助抓药系统，Android客户端。
 
 Table of Contents
@@ -20,8 +20,6 @@ Table of Contents
       * [3\.1\.1 开发环境](#311-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83)
       * [3\.1\.2 运行环境](#312-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83)
     * [3\.2 技术支持](#32-%E6%8A%80%E6%9C%AF%E6%94%AF%E6%8C%81)
-
-Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 ## 1.概要
 
