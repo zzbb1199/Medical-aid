@@ -5,7 +5,7 @@ import com.zxr.medicalaid.mvp.model.sendtype.AndroidBroadcast;
 import com.zxr.medicalaid.mvp.model.sendtype.AndroidNotification;
 
 /**
- * Created by 张兴锐 on 2017/12/14.
+ * Created by Raven on 2017/12/14.
  */
 
 public class NotifyDoctorUtils {

@@ -27,7 +27,7 @@ import java.util.List;
 import butterknife.InjectView;
 
 /**
- * Created by 张兴锐 on 2017/8/7.
+ * Created by Raven on 2017/8/7.
  */
 
 public class MedicalDateSettingActivity extends BaseActivity {

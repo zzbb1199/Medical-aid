@@ -11,7 +11,7 @@ import com.zxr.medicalaid.MedicalDateInfo;
 import com.zxr.medicalaid.R;
 
 /**
- * Created by 张兴锐 on 2017/8/7.
+ * Created by Raven on 2017/8/7.
  */
 
 public class MedicalDateSettingAdapter extends RecyclerArrayAdapter<MedicalDateInfo> {

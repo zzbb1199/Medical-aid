@@ -13,7 +13,7 @@ import com.zxr.medicalaid.utils.system.ActivityStack;
 import butterknife.ButterKnife;
 
 /**
- * Created by 张兴锐 on 2017/8/7.
+ * Created by Raven on 2017/8/7.
  */
 
 public abstract class PermissionActivity extends Activity {

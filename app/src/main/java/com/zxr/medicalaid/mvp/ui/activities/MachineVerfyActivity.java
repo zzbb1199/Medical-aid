@@ -27,7 +27,7 @@ import com.zxr.medicalaid.utils.system.ToActivityUtil;
 
 
 /**
- * @author 张兴锐
+ * @author Raven
  */
 public class MachineVerfyActivity extends BaseActivity {
 
